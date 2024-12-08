@@ -26,7 +26,7 @@ public class MyService {
 	@GET
 	@Path("/hello")
 	public Response sayHello(@Context HttpServletRequest request) {
-		Response response = Response.ok("hello!").build();
+		Response response = Response.ok("Kaixo!").build();
 		return response;
 	}
 
@@ -49,7 +49,7 @@ public class MyService {
 	@Consumes({ MediaType.APPLICATION_JSON })
 	public Response create(Pojo pojo) {
 
-		System.out.println("Creating new Pojo: " + pojo);
+		System.out.println("Creando un nuevo elemento Pojo: " + pojo);
 
 		return Response.status(201).build();
 	}
@@ -59,7 +59,7 @@ public class MyService {
 	@Consumes({ MediaType.APPLICATION_JSON })
 	public Response update(Pojo pojo) {
 
-		System.out.println("Updating the Pojo: " + pojo);
+		System.out.println("Modificando el Pojo: " + pojo);
 
 		return Response.status(204).build();
 	}
@@ -68,7 +68,7 @@ public class MyService {
 	@Path("/pojo/remove")
 	public Response delete(@QueryParam("id") Integer id) {
 
-		System.out.println("Removing pojo with id: " + id);
+		System.out.println("Eliminando el  pojo con id: " + id);
 
 		return Response.status(204).build();
 	}

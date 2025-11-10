@@ -1,7 +1,7 @@
 package com.mycompany.myproject.module.services;
 
-import java.util.Arrays;
 import java.util.List;
+import java.util.ArrayList;
 import java.util.UUID;
 
 import com.mycompany.myproject.module.Pojo;
@@ -23,6 +23,8 @@ import jakarta.ws.rs.core.Response;
 @Path("myservice")
 public class MyService {
 
+	private List<Pojo> lista = new ArrayList<>();
+	
 	@GET
 	@Path("/hello")
 	public Response sayHello(@Context HttpServletRequest request) {
@@ -34,22 +36,33 @@ public class MyService {
 	@Path("/pojo/list")
 	@Produces({ MediaType.APPLICATION_JSON })
 	public List<Pojo> getAll() {
-		return Arrays.asList(new Pojo(1, "LALALA"), new Pojo(2, "LElele"));
+		return lista;
 	}
 
 	@GET
 	@Path("/pojo/find/{id}")
 	@Produces({ MediaType.APPLICATION_JSON })
 	public Pojo find(@PathParam("id") Integer id) {
-		return new Pojo(1, UUID.randomUUID().toString());
+		
+		System.out.println("Buscando un elemento Pojo con id: " + id);
+
+		for (Pojo p : lista) {
+		    if (p.getId() == id) {
+		        System.out.println("Found: " + p);
+		        return p;
+		    }
+		}
+
+		return null;
 	}
 
 	@POST
 	@Path("/pojo/new")
 	@Consumes({ MediaType.APPLICATION_JSON })
 	public Response create(Pojo pojo) {
-
 		System.out.println("Creando un nuevo elemento Pojo: " + pojo);
+
+        lista.add(pojo);
 
 		return Response.status(201).build();
 	}
@@ -61,6 +74,13 @@ public class MyService {
 
 		System.out.println("Modificando el Pojo: " + pojo);
 
+		for (Pojo p : lista) {
+		    if (p.getId() == pojo.getId() ) {
+		        p.setName(pojo.getName());
+		        break; // stop after updating one
+		    }
+		}
+
 		return Response.status(204).build();
 	}
 
@@ -69,6 +89,8 @@ public class MyService {
 	public Response delete(@QueryParam("id") Integer id) {
 
 		System.out.println("Eliminando el  pojo con id: " + id);
+
+		lista.removeIf(p -> p.getId() == id);
 
 		return Response.status(204).build();
 	}

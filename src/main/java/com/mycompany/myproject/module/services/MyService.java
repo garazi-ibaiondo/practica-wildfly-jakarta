@@ -23,7 +23,7 @@ import jakarta.ws.rs.core.Response;
 @Path("myservice")
 public class MyService {
 
-	private List<Pojo> lista = new ArrayList<>();
+	private static final List<Pojo> lista = new ArrayList<>();
 	
 	@GET
 	@Path("/hello")
@@ -85,8 +85,8 @@ public class MyService {
 	}
 
 	@DELETE
-	@Path("/pojo/remove")
-	public Response delete(@QueryParam("id") Integer id) {
+	@Path("/pojo/remove/{id}")
+	public Response delete(@PathParam("id") Integer id) {
 
 		System.out.println("Eliminando el  pojo con id: " + id);
 
